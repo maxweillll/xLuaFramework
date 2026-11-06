@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 1305354435
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ui/res/btn_login.png.ab
+      Dependencies: {}
