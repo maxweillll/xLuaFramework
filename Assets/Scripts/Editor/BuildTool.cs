@@ -50,13 +50,16 @@ public class BuildTool : Editor
                 bundleInfo = bundleInfo + "|" + string.Join("|", dependenceInfo);
             bundleInfos.Add(bundleInfo);
         }
-        //File.WriteAllLines()
 
         if (Directory.Exists(PathUtil.BundleOutPath))
             Directory.Delete(PathUtil.BundleOutPath, true);
         Directory.CreateDirectory(PathUtil.BundleOutPath);
 
         BuildPipeline.BuildAssetBundles(PathUtil.BundleOutPath, assetBundleBuilds.ToArray(), BuildAssetBundleOptions.None, target);
+
+        File.WriteAllLines(PathUtil.BundleOutPath + "/" + AppConst.FileListName, bundleInfos);
+
+        AssetDatabase.Refresh();
     }
     /// <summary>
     /// 获取依赖文件列表

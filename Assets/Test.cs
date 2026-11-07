@@ -10,8 +10,11 @@ public class Test : MonoBehaviour
         AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(Application.streamingAssetsPath + "/ui/prefabs/canvas.prefab.ab");
         yield return request;
 
-        AssetBundleCreateRequest request1 = AssetBundle.LoadFromFileAsync(Application.streamingAssetsPath + "/ui/res/btn_login.png.ab");
+        AssetBundleCreateRequest request1 = AssetBundle.LoadFromFileAsync(Application.streamingAssetsPath + "/ui/res/button_150.png.ab");
         yield return request1;
+
+        AssetBundleCreateRequest request2 = AssetBundle.LoadFromFileAsync(Application.streamingAssetsPath + "/ui/res/background.png.ab");
+        yield return request2;
 
         AssetBundleRequest bundRequest = request.assetBundle.LoadAssetAsync("Assets/BuildResources/UI/Prefabs/Canvas.prefab");
         yield return bundRequest;
