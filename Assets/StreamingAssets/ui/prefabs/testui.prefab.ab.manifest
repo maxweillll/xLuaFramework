@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1899421454
+CRC: 1085079698
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: e8ff023c56e31191f70c7b6b68b8f383
+    Hash: d6635e31f8223d0384118dd361d82a8c
   TypeTreeHash:
     serializedVersion: 2
     Hash: 1886b9903723fa3c302401093b4762e3
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: e8ff023c56e31191f70c7b6b68b8f383
+    Hash: d6635e31f8223d0384118dd361d82a8c
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -48,7 +48,7 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UI
   ClassName: UnityEngine.UI.SpriteState
 Assets:
-- Assets/BuildResources/UI/Prefabs/Canvas.prefab
+- Assets/BuildResources/UI/Prefabs/TestUI.prefab
 Dependencies:
 - E:/code/Lua/XLua/xLuaFramework/Assets/StreamingAssets/ui/res/background.png.ab
 - E:/code/Lua/XLua/xLuaFramework/Assets/StreamingAssets/ui/res/button_150.png.ab

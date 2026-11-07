@@ -45,9 +45,11 @@ public class BuildTool : Editor
 
             //添加文件和依赖信息
             List<string> dependenceInfo = GetDependence(assetName);
-            string bundleInfo = assetName + "|" + bundleName;
+            string bundleInfo = assetName + "|" + bundleName + ".ab";
+
             if (dependenceInfo.Count > 0)
                 bundleInfo = bundleInfo + "|" + string.Join("|", dependenceInfo);
+
             bundleInfos.Add(bundleInfo);
         }
 
@@ -70,7 +72,7 @@ public class BuildTool : Editor
     {
         List<string> dependence = new List<string>();
         string[] files = AssetDatabase.GetDependencies(curFile);
-        dependence = files.Where(file => !file.EndsWith(".cs") && file.Equals(curFile)).ToList();
+        dependence = files.Where(file => !file.EndsWith(".cs") && !file.Equals(curFile)).ToList();
         return dependence;
     }
 }

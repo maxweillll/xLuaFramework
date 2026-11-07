@@ -50,7 +50,7 @@ public class ResourceManager : MonoBehaviour
     IEnumerator LoadBundleAsync(string assetName, Action<UObject> action = null)
     {
         string bundleName = m_BundleInfos[assetName].BundleName;
-        string bundlePath = Path.Combine(PathUtil.BundleOutPath, bundleName);
+        string bundlePath = Path.Combine(PathUtil.BundleResourcePath, bundleName);
         List<string> dependences = m_BundleInfos[assetName].Dependences;
         if (dependences != null && dependences.Count > 0)
         {
@@ -61,5 +61,28 @@ public class ResourceManager : MonoBehaviour
         }
         AssetBundleCreateRequest request = AssetBundle.LoadFromFileAsync(bundlePath);
         yield return request;
+
+        AssetBundleRequest bundRequest = request.assetBundle.LoadAssetAsync(assetName);
+        yield return bundRequest;
+
+        action?.Invoke(bundRequest?.asset);//问号判空
+    }
+    public void LoadAsset(string assetName,Action<UObject> action)
+    {
+        StartCoroutine(LoadBundleAsync(assetName, action));
+    }
+
+    void Start()
+    {
+        ParseVersionFile();
+        LoadAsset("Assets/BuildResources/UI/Prefabs/TestUI.prefab", OnComplete);
+    }
+
+    private void OnComplete(UObject obj)
+    {
+        GameObject go = Instantiate(obj) as GameObject;
+        go.transform.SetParent(this.transform);
+        go.SetActive(true);
+        go.transform.localPosition = Vector3.zero;
     }
 }
