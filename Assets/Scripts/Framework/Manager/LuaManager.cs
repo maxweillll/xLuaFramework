@@ -41,7 +41,7 @@ public class LuaManager : MonoBehaviour
         return GetLuaScript(name);
     }
 
-    private byte[] GetLuaScript(string name)
+    public byte[] GetLuaScript(string name)
     {
         //require ui.login.register 替换为斜杠
         name = name.Replace(".", "/");
@@ -85,6 +85,7 @@ public class LuaManager : MonoBehaviour
             byte[] file = File.ReadAllBytes(fileName);
             AddLuaScript(fileName, file);
         }
+        InitOK?.Invoke();
     }
 #endif
 
