@@ -1,7 +1,7 @@
 ﻿public enum GameMode
 {
     EditorMode,
-    PackgeBundle,
+    PackageBundle,
     UpdateMode,
 }
 public class AppConst

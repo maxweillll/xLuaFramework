@@ -19,7 +19,7 @@ public class ResourceManager : MonoBehaviour
     /// <summary>
     /// 解析版本文件
     /// </summary>
-    private void ParseVersionFile()
+    public void ParseVersionFile()
     {
         //版本文件夹的路径
         string url = Path.Combine(PathUtil.BundleResourcePath, AppConst.FileListName);
@@ -68,7 +68,7 @@ public class ResourceManager : MonoBehaviour
 
         action?.Invoke(bundRequest?.asset);//问号判空
     }
-
+#if UNITY_EDITOR
     /// <summary>
     /// 编辑器环境加载资源
     /// </summary>
@@ -82,13 +82,18 @@ public class ResourceManager : MonoBehaviour
             Debug.LogError("asset name is not exist:" + assetName);
         action?.Invoke(obj);
     }
+#endif
 
     private void LoadAsset(string assetName,Action<UObject> action)
     {
+#if UNITY_EDITOR
         if (AppConst.GameMode == GameMode.EditorMode)
+        {
             EditorLoadAsset(assetName, action);
-        else
-            StartCoroutine(LoadBundleAsync(assetName, action));
+            return;
+        }
+#endif
+        StartCoroutine(LoadBundleAsync(assetName, action));
     }
     //加载UI
     public void LoadUI(string assetName,Action<UObject> action = null)
@@ -114,17 +119,4 @@ public class ResourceManager : MonoBehaviour
 
     //Tag:卸载暂时不做
 
-    void Start()
-    {
-        ParseVersionFile();
-        LoadUI("Login/LoginUI", OnComplete);
-    }
-
-    private void OnComplete(UObject obj)
-    {
-        GameObject go = Instantiate(obj) as GameObject;
-        go.transform.SetParent(this.transform);
-        go.SetActive(true);
-        go.transform.localPosition = Vector3.zero;
-    }
 }

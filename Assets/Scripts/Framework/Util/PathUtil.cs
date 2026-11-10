@@ -25,8 +25,8 @@ public class PathUtil
         get 
         {
             if (AppConst.GameMode == GameMode.UpdateMode)
-                return Application.persistentDataPath;
-            return Application.streamingAssetsPath;
+                return ReadWritePath;
+            return ReadPath;
         }
     }
 
