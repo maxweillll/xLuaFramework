@@ -39,6 +39,9 @@ public class ResourceManager : MonoBehaviour
                 bundleInfo.Dependences.Add(info[j]);
             }
             m_BundleInfos.Add(bundleInfo.AssetsName, bundleInfo);
+
+            if (info[0].IndexOf("LuaScripts")>0)
+                Manager.Lua.LuaNames.Add(info[0]);
         }
     }
     /// <summary>
@@ -90,10 +93,10 @@ public class ResourceManager : MonoBehaviour
         if (AppConst.GameMode == GameMode.EditorMode)
         {
             EditorLoadAsset(assetName, action);
-            return;
         }
+        else
 #endif
-        StartCoroutine(LoadBundleAsync(assetName, action));
+            StartCoroutine(LoadBundleAsync(assetName, action));
     }
     //加载UI
     public void LoadUI(string assetName,Action<UObject> action = null)
@@ -115,6 +118,11 @@ public class ResourceManager : MonoBehaviour
     public void LoadScene(string assetName, Action<UObject> action = null)
     {
         LoadAsset(PathUtil.GetEffectPath(assetName), action);
+    }
+
+    public void LoadLua(string assetName, Action<UObject> action = null)
+    {
+        LoadAsset(assetName, action);
     }
 
     //Tag:卸载暂时不做
