@@ -13,6 +13,12 @@ public class PathUtil
     //bundle的输出目录
     public static readonly string BundleOutPath = Application.streamingAssetsPath;
 
+    //只读目录
+    public static readonly string ReadPath = Application.streamingAssetsPath;
+
+    //可读写目录
+    public static readonly string ReadWritePath = Application.persistentDataPath;
+
     //bundle资源路径
     public static string BundleResourcePath
     {
