@@ -16,7 +16,12 @@ public class PathUtil
     //bundle资源路径
     public static string BundleResourcePath
     {
-        get { return Application.streamingAssetsPath; }
+        get 
+        {
+            if (AppConst.GameMode == GameMode.UpdateMode)
+                return Application.persistentDataPath;
+            return Application.streamingAssetsPath;
+        }
     }
 
     /// <summary>
