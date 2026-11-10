@@ -7,6 +7,8 @@ using UnityEngine.Networking;
 
 public class HotUpdate : MonoBehaviour
 {
+    byte[] m_ReadPathFileListData;
+    byte[] m_ServerFileListData;
     internal class DownFileInfo
     {
         public string url;
@@ -68,5 +70,101 @@ public class HotUpdate : MonoBehaviour
             downFileInfos.Add(fileInfo);
         }
         return downFileInfos;
+    }
+
+    private void Start()
+    {
+        if (IsFirstInstall())
+        {
+            ReleaseResources();
+        }
+        else
+        {
+            CheckUpdate();
+        }
+    }
+
+    private bool IsFirstInstall()
+    {
+        //判断只读目录是否存在版本文件
+        bool isExistsReadPath = FileUtil.IsExists(Path.Combine(PathUtil.ReadPath, AppConst.FileListName));
+
+        //判断可读性目录是否存在版本文件
+        bool isExistsReadWritePath = FileUtil.IsExists(Path.Combine(PathUtil.ReadWritePath, AppConst.FileListName));
+        
+        return isExistsReadPath && !isExistsReadWritePath;
+    }
+
+    private void ReleaseResources()
+    {
+        string url=Path.Combine(PathUtil.ReadPath,AppConst.FileListName);
+        DownFileInfo info = new DownFileInfo();
+        info.url = url;
+        StartCoroutine(DownLoadFile(info, OnDownLoadReadPathFileListComplete)); 
+    }
+
+    private void OnDownLoadReadPathFileListComplete(DownFileInfo file)
+    {
+        m_ReadPathFileListData = file.fileData.data;
+        List<DownFileInfo> fileInfos = GetFileList(file.fileData.text, PathUtil.ReadPath);
+        StartCoroutine(DownLoadFile(fileInfos, OnReleaseFileComplete, OnReleaseAllFileComplete));
+    }
+
+    private void OnReleaseAllFileComplete()
+    {
+        FileUtil.WriteFile(Path.Combine(PathUtil.ReadWritePath, AppConst.FileListName), m_ReadPathFileListData);
+        CheckUpdate();
+    }
+
+    private void OnReleaseFileComplete(DownFileInfo fileInfo)
+    {
+        string writeFile = Path.Combine(PathUtil.ReadWritePath, fileInfo.fileName);
+        FileUtil.WriteFile(writeFile, fileInfo.fileData.data);
+    }
+
+    private void CheckUpdate()
+    {
+        string url = Path.Combine(AppConst.ResourcesUrl, AppConst.FileListName);
+        DownFileInfo info=new DownFileInfo();
+        info.url = url;
+        StartCoroutine(DownLoadFile(info, OnDownLoadServerFileListCompletr));
+    }
+
+    private void OnDownLoadServerFileListCompletr(DownFileInfo file)
+    {
+        m_ServerFileListData = file.fileData.data;
+        List<DownFileInfo> fileInfos = GetFileList(file.fileData.text, AppConst.ResourcesUrl);
+        List<DownFileInfo> downListFiles = new List<DownFileInfo>();
+
+        for (int i = 0; i < fileInfos.Count; i++)
+        {
+            string localFile = Path.Combine(PathUtil.ReadWritePath, fileInfos[i].fileName);
+            if (!FileUtil.IsExists(localFile))
+            {
+                fileInfos[i].url = Path.Combine(AppConst.ResourcesUrl, fileInfos[i].fileName);
+                downListFiles.Add(fileInfos[i]);
+            }
+        }
+        if (downListFiles.Count > 0)
+            StartCoroutine(DownLoadFile(fileInfos, OnUpdateFileComplete, OnUpdateAllFileComplete));
+        else
+            EnterGame();
+    }
+
+    private void OnUpdateAllFileComplete()
+    {
+        FileUtil.WriteFile(Path.Combine(PathUtil.ReadWritePath, AppConst.FileListName), m_ServerFileListData);
+        EnterGame();
+    }
+
+    private void OnUpdateFileComplete(DownFileInfo file)
+    {
+        string writeFile = Path.Combine(PathUtil.ReadWritePath, file.fileName);
+        FileUtil.WriteFile(writeFile, file.fileData.data);
+    }
+
+    private void EnterGame()
+    {
+        throw new NotImplementedException();
     }
 }
