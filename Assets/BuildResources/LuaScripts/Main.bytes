@@ -1,6 +1,17 @@
 Manager = CS.Manager
+
+local group={
+	"Main",
+	"UI",
+	"Box",
+}
+
+Manager.UI:SetUIGroup(group)
+
 function Main()
 	print("hello main")
-	Manager.UI:OpenUI("TestUI","UI.TestUI")
+	Manager.UI:OpenUI("TestUI","UI","UI.TestUI")
+	Manager.UI:OpenUI("TestUI","UI","UI.TestUI")
+	Manager.UI:OpenUI("TestUI","Main","UI.TestUI")
 end
 --Main()
