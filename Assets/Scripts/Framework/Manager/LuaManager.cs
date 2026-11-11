@@ -15,11 +15,8 @@ public class LuaManager : MonoBehaviour
 
     public LuaEnv LuaEnv;
 
-    Action InitOK;
-
-    public void Init( Action init)
+    public void Init()
     {
-        InitOK += init;
         LuaEnv = new LuaEnv();
         LuaEnv.AddLoader(Loader);
         m_luaScripts = new Dictionary<string, byte[]>();
@@ -62,7 +59,7 @@ public class LuaManager : MonoBehaviour
             if (m_luaScripts.Count >= LuaNames.Count)
                 {
                     //所有lua加载完成的时候
-                    InitOK?.Invoke();
+                    Manager.Event.Fire(10000);
                     LuaNames.Clear();
                     LuaNames = null;
                 }
@@ -85,7 +82,7 @@ public class LuaManager : MonoBehaviour
             byte[] file = File.ReadAllBytes(fileName);
             AddLuaScript(fileName, file);
         }
-        InitOK?.Invoke();
+        Manager.Event.Fire(10000);
     }
 #endif
 
