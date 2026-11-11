@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 1907548959
+CRC: 2949359937
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -37,6 +37,7 @@ AssetBundleManifest:
       Dependencies:
         Dependency_0: ui/res/background.png.ab
         Dependency_1: ui/res/button_150.png.ab
+        Dependency_2: ui/res/slider_handle.png.ab
     Info_11:
       Name: ui/res/background.png.ab
       Dependencies: {}

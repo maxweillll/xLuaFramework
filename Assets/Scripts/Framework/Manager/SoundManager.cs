@@ -37,7 +37,7 @@ public class SoundManager : MonoBehaviour
     /// 播放音乐
     /// </summary>
     /// <param name="name"></param>
-    public void PlayeMusic(string name)
+    public void PlayMusic(string name)
     {
         if (this.MusicVolume < 0.1f)
             return;
@@ -46,7 +46,10 @@ public class SoundManager : MonoBehaviour
             oldName = m_MusicAudio.clip.name;
         //相同的音乐不重复播放
         if (oldName == name)
+        {
+            m_MusicAudio.Play();
             return;
+        }
 
         Manager.Resource.LoadMusic(name, (UnityEngine.Object obj) =>
         {
@@ -79,7 +82,7 @@ public class SoundManager : MonoBehaviour
     /// 播放音效
     /// </summary>
     /// <param name="name"></param>
-    public void PlayeSound(string name)
+    public void PlaySound(string name)
     {
         if (this.SoundVolume < 0.1f)
             return;
@@ -87,6 +90,7 @@ public class SoundManager : MonoBehaviour
         Manager.Resource.LoadSound(name, (UnityEngine.Object obj) =>
         {
             m_SoundAudio.clip = obj as AudioClip;
+            m_SoundAudio.Play();
         });
     }
     /// <summary>
