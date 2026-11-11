@@ -11,7 +11,6 @@ Manager.UI:SetUIGroup(group)
 function Main()
 	print("hello main")
 	Manager.UI:OpenUI("TestUI","UI","UI.TestUI")
-	Manager.UI:OpenUI("TestUI","UI","UI.TestUI")
-	Manager.UI:OpenUI("TestUI","Main","UI.TestUI")
+	Manager.UI:OpenUI("Login/LoginUI","Main","UI.TestUI")
 end
 --Main()

@@ -19,12 +19,6 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < group.Count; i++)
         {
-            //重复调用（例如 Main 被 require 多次）时复用已有分组，避免 Add 抛重复键
-            if (m_UIGroups.ContainsKey(group[i]))
-            {
-                Debug.LogWarning("ui group already exist: " + group[i]);
-                continue;
-            }
             GameObject go = new GameObject("Group-" + group[i]);
             go.transform.SetParent(m_UIparent, false);
             m_UIGroups.Add(group[i], go.transform);
@@ -32,13 +26,9 @@ public class UIManager : MonoBehaviour
     }
     Transform GetUIGroup(string group)
     {
-        Transform trans;
-        if (!m_UIGroups.TryGetValue(group, out trans))
-        {
-            Debug.LogError("group is not exist: " + group);
-            return null;
-        }
-        return trans;
+        if (!m_UIGroups.ContainsKey(group))
+            Debug.LogError("group is not exist");
+        return m_UIGroups[group];
     }
     public void OpenUI(string uiName, string group,string luaName)
     {
@@ -52,19 +42,10 @@ public class UIManager : MonoBehaviour
 
         Manager.Resource.LoadUI(uiName, (UnityEngine.Object obj) =>
         {
-            //异步加载期间同一个 UI 可能被再次打开，已缓存则复用，避免重复 Add 抛键冲突
-            GameObject cached;
-            if (m_UI.TryGetValue(uiName, out cached))
-            {
-                cached.GetComponent<UILogic>().OnOpen();
-                return;
-            }
+            ui=Instantiate(obj) as GameObject;
+            m_UI.Add(uiName, ui);
 
-            ui = Instantiate(obj) as GameObject;
-            m_UI[uiName] = ui;
-
-            Transform parent = GetUIGroup(group);   //这里要用分组名，不是 uiName
-            if (parent == null) parent = m_UIparent; //分组名传错时兜底，避免 UI 被挂到场景根节点
+            Transform parent=GetUIGroup(group);
             ui.transform.SetParent(parent, false);
 
             UILogic uiLogic = ui.AddComponent<UILogic>();
