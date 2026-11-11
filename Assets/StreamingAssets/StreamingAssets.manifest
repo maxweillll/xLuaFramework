@@ -1,31 +1,58 @@
 ManifestFileVersion: 0
-CRC: 4008459278
+CRC: 1907548959
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: luascripts/main.bytes.ab
       Dependencies: {}
     Info_1:
+      Name: scenes/test01.unity.ab
+      Dependencies: {}
+    Info_2:
+      Name: scenes/test02.unity.ab
+      Dependencies: {}
+    Info_3:
+      Name: audio/music/dayu.mp3.ab
+      Dependencies: {}
+    Info_4:
+      Name: audio/sound/ui_touch.wav.ab
+      Dependencies: {}
+    Info_5:
+      Name: luascripts/entity/playerentity.bytes.ab
+      Dependencies: {}
+    Info_6:
+      Name: luascripts/scene/scene01.bytes.ab
+      Dependencies: {}
+    Info_7:
+      Name: luascripts/scene/scene02.bytes.ab
+      Dependencies: {}
+    Info_8:
+      Name: luascripts/ui/testui.bytes.ab
+      Dependencies: {}
+    Info_9:
+      Name: model/prefabs/player.prefab.ab
+      Dependencies: {}
+    Info_10:
       Name: ui/prefabs/testui.prefab.ab
       Dependencies:
         Dependency_0: ui/res/background.png.ab
         Dependency_1: ui/res/button_150.png.ab
-    Info_2:
+    Info_11:
       Name: ui/res/background.png.ab
       Dependencies: {}
-    Info_3:
+    Info_12:
       Name: ui/res/button_150.png.ab
       Dependencies: {}
-    Info_4:
+    Info_13:
       Name: ui/res/radio_100.png.ab
       Dependencies: {}
-    Info_5:
+    Info_14:
       Name: ui/res/slider_handle.png.ab
       Dependencies: {}
-    Info_6:
+    Info_15:
       Name: ui/res/universal_panel_40.png.ab
       Dependencies: {}
-    Info_7:
+    Info_16:
       Name: ui/prefabs/login/loginui.prefab.ab
       Dependencies:
         Dependency_0: ui/res/background.png.ab
