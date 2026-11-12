@@ -68,11 +68,30 @@ public class BuildTool : Editor
     /// </summary>
     /// <param name="curFile"></param>
     /// <returns></returns>
+
     static List<string> GetDependence(string curFile)
     {
-        List<string> dependence = new List<string>();
         string[] files = AssetDatabase.GetDependencies(curFile);
-        dependence = files.Where(file => !file.EndsWith(".cs") && !file.Equals(curFile)).ToList();
-        return dependence;
+
+        string dataPath = PathUtil.GetStandardPath(Application.dataPath).TrimEnd('/');
+        string buildRoot = PathUtil.GetStandardPath(PathUtil.BuildResourcesPath).TrimEnd('/');
+        string buildRootUnity = PathUtil.GetUnityPath(PathUtil.BuildResourcesPath).TrimEnd('/');
+
+        return files
+            .Where(file => !file.Equals(curFile))
+            .Where(file => !file.EndsWith(".cs"))
+            .Where(file => !file.StartsWith("Packages/"))
+            .Where(file => !file.Contains("/Editor/") & !file.Contains("/Editor Resources/"))
+            .Where(file => PathUtil.GetStandardPath(file).StartsWith(buildRootUnity))
+            .ToList();
     }
+
+
+    //static List<string> GetDependence(string curFile)
+    //{
+    //    List<string> dependence = new List<string>();
+    //    string[] files = AssetDatabase.GetDependencies(curFile);
+    //    dependence = files.Where(file => !file.EndsWith(".cs") && !file.Equals(curFile)).ToList();
+    //    return dependence;
+    //}
 }

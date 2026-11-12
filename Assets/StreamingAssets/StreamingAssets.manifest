@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 616165808
+CRC: 2466731365
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -56,5 +56,5 @@ AssetBundleManifest:
     Info_16:
       Name: ui/prefabs/login/loginui.prefab.ab
       Dependencies:
-        Dependency_0: ui/res/background.png.ab
+        Dependency_0: ui/res/button_150.png.ab
         Dependency_1: ui/res/slider_handle.png.ab

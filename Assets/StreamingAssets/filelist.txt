@@ -8,10 +8,10 @@ Assets/BuildResources/LuaScripts/scene/Scene01.bytes|luascripts/scene/scene01.by
 Assets/BuildResources/LuaScripts/scene/Scene02.bytes|luascripts/scene/scene02.bytes.ab
 Assets/BuildResources/LuaScripts/ui/TestUI.bytes|luascripts/ui/testui.bytes.ab
 Assets/BuildResources/Model/Prefabs/Player.prefab|model/prefabs/player.prefab.ab
-Assets/BuildResources/UI/Prefabs/TestUI.prefab|ui/prefabs/testui.prefab.ab|Assets/BuildResources/UI/Res/background.png|Packages/com.unity.textmeshpro/Editor Resources/Gizmos/TMP - Font Asset Icon.psd|Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader|Packages/com.unity.textmeshpro/Editor Resources/Gizmos/TMP - Text Component Icon.psd|Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset|Assets/BuildResources/UI/Res/slider_handle.png|Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset|Assets/BuildResources/UI/Res/button_150.png|Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+Assets/BuildResources/UI/Prefabs/TestUI.prefab|ui/prefabs/testui.prefab.ab|Assets/BuildResources/UI/Res/background.png|Assets/BuildResources/UI/Res/slider_handle.png|Assets/BuildResources/UI/Res/button_150.png
 Assets/BuildResources/UI/Res/background.png|ui/res/background.png.ab
 Assets/BuildResources/UI/Res/button_150.png|ui/res/button_150.png.ab
 Assets/BuildResources/UI/Res/radio_100.png|ui/res/radio_100.png.ab
 Assets/BuildResources/UI/Res/slider_handle.png|ui/res/slider_handle.png.ab
 Assets/BuildResources/UI/Res/universal_panel_40.png|ui/res/universal_panel_40.png.ab
-Assets/BuildResources/UI/Prefabs/Login/LoginUI.prefab|ui/prefabs/login/loginui.prefab.ab|Assets/BuildResources/UI/Res/background.png|Assets/BuildResources/UI/Res/slider_handle.png
+Assets/BuildResources/UI/Prefabs/Login/LoginUI.prefab|ui/prefabs/login/loginui.prefab.ab|Assets/BuildResources/UI/Res/slider_handle.png|Assets/BuildResources/UI/Res/button_150.png
