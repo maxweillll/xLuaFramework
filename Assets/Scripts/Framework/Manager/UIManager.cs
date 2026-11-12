@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     //缓存UI
-    Dictionary<string, GameObject> m_UI = new Dictionary<string, GameObject>();
+    //Dictionary<string, GameObject> m_UI = new Dictionary<string, GameObject>();
     //ui分组
     Dictionary<string,Transform> m_UIGroups = new Dictionary<string,Transform>();
 
@@ -33,8 +34,14 @@ public class UIManager : MonoBehaviour
     public void OpenUI(string uiName, string group,string luaName)
     {
         GameObject ui = null;
-        if(m_UI.TryGetValue(uiName, out ui))
+        Transform parent = GetUIGroup(group);
+        string uiPath = PathUtil.GetUIPath(uiName);
+        Object uiObj = Manager.Pool.Spawn("UI", uiPath);
+        if (uiObj!=null)
         {
+            ui = uiObj as GameObject;
+            ui.transform.SetParent(parent, false);
+
             UILogic uiLogic = ui.GetComponent<UILogic>();
             uiLogic.OnOpen();
             return;
@@ -43,12 +50,9 @@ public class UIManager : MonoBehaviour
         Manager.Resource.LoadUI(uiName, (UnityEngine.Object obj) =>
         {
             ui=Instantiate(obj) as GameObject;
-            m_UI.Add(uiName, ui);
-
-            Transform parent=GetUIGroup(group);
             ui.transform.SetParent(parent, false);
-
             UILogic uiLogic = ui.AddComponent<UILogic>();
+            uiLogic.AssetName = uiPath;
             uiLogic.Init(luaName);
             uiLogic.OnOpen();
         });

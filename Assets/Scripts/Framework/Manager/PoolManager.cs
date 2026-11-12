@@ -39,4 +39,23 @@ public class PoolManager : MonoBehaviour
     {
         CreatePool<AssetPool>(poolName, releaseTime);
     }
+
+    //取出对象
+    public Object Spawn(string poolName, string assetName)
+    {
+        if (m_Pools.TryGetValue(poolName, out PoolBase pool))
+        {
+            return pool.Spawn(assetName);
+        }
+        return null;
+    }
+
+    //回收对象
+    public void UnSpawn(string poolName,string assetName,Object asset)
+    {
+        if(m_Pools.TryGetValue(poolName,out PoolBase pool))
+        {
+            pool.UnSpawn(assetName, asset);
+        }
+    }
 }
