@@ -1,0 +1,63 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PoolBase : MonoBehaviour
+{
+    //自动释放时间/秒
+    protected float m_ReleaseTime;
+
+    //上次释放资源的时间/毫微秒 毫微秒是时间单位，等于 1 纳秒（10⁻⁹ 秒），即十亿分之一秒。
+    protected long m_LastReleaseTime = 0;
+
+    //真正的对象池
+    protected List<PoolObject> m_Objects;
+
+    private void Start()
+    {
+        m_LastReleaseTime = System.DateTime.Now.Ticks;
+    }
+
+    //初始化对象池
+    public void Init(float time)
+    {
+        m_ReleaseTime = time;
+        m_Objects = new List<PoolObject>();
+    }
+
+    //取出对象
+    public virtual Object Spawn(string name)
+    {
+        foreach (PoolObject po in m_Objects)
+        {
+            if (po.Name == name)
+            {
+                m_Objects.Remove(po);
+                return po.Object;
+            }
+        }
+        return null;
+    }
+
+    //回收对象
+    public virtual void UnSpawn(string name,Object obj)
+    {
+        PoolObject po = new PoolObject(name, obj);
+        m_Objects.Add(po);
+    }
+
+    //释放 这是父类什么都没做
+    public virtual void Release()
+    {
+
+    }
+
+    private void Update()
+    {
+        if (System.DateTime.Now.Ticks - m_LastReleaseTime >= m_ReleaseTime * 10000000)
+        {
+            m_LastReleaseTime = System.DateTime.Now.Ticks;
+            Release();
+        }
+    }
+}

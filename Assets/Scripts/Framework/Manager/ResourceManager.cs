@@ -157,5 +157,8 @@ public class ResourceManager : MonoBehaviour
     }
 
     //Tag:卸载暂时不做
+    public void UnLoadBundle(string name)
+    {
 
+    }
 }
