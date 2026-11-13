@@ -158,6 +158,8 @@ public class HotUpdate : MonoBehaviour
         for (int i = 0; i < fileInfos.Count; i++)
         {
             string localFile = Path.Combine(PathUtil.ReadWritePath, fileInfos[i].fileName);
+
+            //通过文件的md5来进行校验
             if (!FileUtil.IsExists(localFile))
             {
                 fileInfos[i].url = Path.Combine(AppConst.ResourcesUrl, fileInfos[i].fileName);

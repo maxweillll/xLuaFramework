@@ -18,7 +18,7 @@ public class AppConst
 
     public static bool OpenLog = true;
     //热更资源的地址 
-    public const string ResourcesUrl = "http://127.0.0.1/AssetBundles";
+    public const string ResourcesUrl = "http://192.168.99.47/AssetBundles";
 
     public static GameMode GameMode = GameMode.EditorMode;
 }
