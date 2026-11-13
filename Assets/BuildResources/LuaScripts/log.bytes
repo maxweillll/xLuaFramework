@@ -1,18 +1,25 @@
 local Log = {}
 
-local function read_table(tab,tap_count)
-    local symbol = get_symbol(count)
-    for i = 1,count do
-        symbol = symbol .. "  "
+local function read_table(tab, tab_count)
+    local function get_symbol(count)
+        local symbol = ""
+        for i = 1, count do
+            symbol = symbol .. "     "
+        end
+        return symbol
     end
-    return symbol
-    local symbol = get_symbol(tab_count)
+
+    local symbol=get_symbol(tab_count)
     local str = ""
-    for k,v in pairs(tab) do
+    for k, v in pairs(tab) do
         if type(v) == "table" then
-            str = str .. symbol .. k .. ":\n" .. symbol .."[" .."\n".. read_table(v,tap_count + 1) ..symbol.."]\n"
+            str = str .. symbol
+                .. k .. ":\n"
+                .. symbol .. "["
+                .. "\n" .. read_table(v, tab_count + 1)
+                .. symbol .. "]\n"
         elseif type(v) == "boolean" then
-            str = str .. symbol .. k .. (v and " = true" or " = false").. "\n"
+            str = str .. symbol .. k .. (v and " = true" or " = false") .. "\n"
         elseif type(v) == "function" then
             str = str .. symbol .. k .. " = function\n"
         elseif type(v) == "userdata" then
@@ -26,10 +33,10 @@ end
 
 local function get_log_string(...)
     local str = ""
-    local prm = {...}
-    for k,v in pairs(prm) do
+    local prm = { ... }
+    for k, v in pairs(prm) do
         if type(v) == "table" then
-            str = str .. "\n" .. read_table(v,1) .."\n"
+            str = str .. "\n" .. read_table(v, 1) .. "\n"
         elseif type(v) == "function" then
             str = str .. v .. " = function\n"
         elseif type(v) == "userdata" then
@@ -58,8 +65,8 @@ end
 function Log.Error(...)
     if not AppConst.OpenLog then
         return
-    end   
-    local str =get_log_string(...)
+    end
+    local str = get_log_string(...)
     CS.Log.Error(str .. debug.traceback())
 end
 

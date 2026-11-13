@@ -76,12 +76,16 @@ public class NetClient
         {
             if (m_Client == null || m_TcpStream == null)
                 return;
-            if (m_Buffer.Length < 1)
+
+            //收到的消息长度
+            int length = m_TcpStream.EndRead(asyncResult);
+
+            if (length < 1)
             {
                 OnDisConnected();
                 return;
             }
-            ReceiveData();
+            ReceiveData(length);
             lock (m_TcpStream)
             {
                 Array.Clear(m_Buffer, 0, m_Buffer.Length);
@@ -98,10 +102,10 @@ public class NetClient
     /// <summary>
     /// 解析数据
     /// </summary>
-    private void ReceiveData()
+    private void ReceiveData(int len)
     {
         m_MemStream.Seek(0, SeekOrigin.End);
-        m_MemStream.Write(m_Buffer, 0, m_Buffer.Length);
+        m_MemStream.Write(m_Buffer, 0, len);
         m_MemStream.Seek(0, SeekOrigin.Begin);
         while (RemainingBytesLenth() >= 8)
         {

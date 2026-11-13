@@ -5,7 +5,7 @@ local msg_responses = {}
 
 -- 手动添加每个模块名字
 local msg_name_list = {
-    --"msg_test",
+    "msg_test",
 }
 
 function msg_mgr.init()
