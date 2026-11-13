@@ -4,6 +4,13 @@
     PackageBundle,
     UpdateMode,
 }
+
+public enum GameEvent
+{
+    GameInit=10000,
+    StartLua,
+}
+
 public class AppConst
 {
     public const string BuildExtension = ".ab";

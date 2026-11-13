@@ -17,6 +17,9 @@ public class HotUpdate : MonoBehaviour
         public DownloadHandler fileData;
     }
 
+    //下载文件数量
+    int m_DownloadCount = 0;
+
     /// <summary>
     /// 下载单个文件
     /// </summary>
@@ -33,6 +36,7 @@ public class HotUpdate : MonoBehaviour
             yield break;
             //TODO:重试
         }
+        yield return new WaitForSeconds(0.2f);//延时 方便观察
         info.fileData = webRequest.downloadHandler;
         Complete?.Invoke(info);
         webRequest.Dispose();
@@ -73,8 +77,16 @@ public class HotUpdate : MonoBehaviour
         return downFileInfos;
     }
 
+
+    GameObject loadingObj;
+    LoadingUI loadingUI;
     private void Start()
     {
+        GameObject go = Resources.Load<GameObject>("LoadingUI");
+        loadingObj=Instantiate(go);
+        loadingObj.transform.SetParent(this.transform);
+        loadingUI = loadingObj.GetComponent<LoadingUI>();
+
         if (IsFirstInstall())
         {
             ReleaseResources();
@@ -98,6 +110,7 @@ public class HotUpdate : MonoBehaviour
 
     private void ReleaseResources()
     {
+        m_DownloadCount = 0;
         string url=Path.Combine(PathUtil.ReadPath,AppConst.FileListName);
         DownFileInfo info = new DownFileInfo();
         info.url = url;
@@ -109,6 +122,7 @@ public class HotUpdate : MonoBehaviour
         m_ReadPathFileListData = file.fileData.data;
         List<DownFileInfo> fileInfos = GetFileList(file.fileData.text, PathUtil.ReadPath);
         StartCoroutine(DownLoadFile(fileInfos, OnReleaseFileComplete, OnReleaseAllFileComplete));
+        loadingUI.InitProgress(fileInfos.Count, "正在释放资源，不消耗流量...");
     }
 
     private void OnReleaseAllFileComplete()
@@ -122,6 +136,8 @@ public class HotUpdate : MonoBehaviour
         Debug.Log("OnReleaseFileComplete" + fileInfo.url);
         string writeFile = Path.Combine(PathUtil.ReadWritePath, fileInfo.fileName);
         FileUtil.WriteFile(writeFile, fileInfo.fileData.data);
+        m_DownloadCount++;
+        loadingUI.UpdateProgress(m_DownloadCount);
     }
 
     private void CheckUpdate()
@@ -134,6 +150,7 @@ public class HotUpdate : MonoBehaviour
 
     private void OnDownLoadServerFileListCompletr(DownFileInfo file)
     {
+        m_DownloadCount = 0;
         m_ServerFileListData = file.fileData.data;
         List<DownFileInfo> fileInfos = GetFileList(file.fileData.text, AppConst.ResourcesUrl);
         List<DownFileInfo> downListFiles = new List<DownFileInfo>();
@@ -148,7 +165,10 @@ public class HotUpdate : MonoBehaviour
             }
         }
         if (downListFiles.Count > 0)
+        {
             StartCoroutine(DownLoadFile(fileInfos, OnUpdateFileComplete, OnUpdateAllFileComplete));
+            loadingUI.InitProgress(downListFiles.Count, "正在更新...");
+        }
         else
             EnterGame();
     }
@@ -157,6 +177,7 @@ public class HotUpdate : MonoBehaviour
     {
         FileUtil.WriteFile(Path.Combine(PathUtil.ReadWritePath, AppConst.FileListName), m_ServerFileListData);
         EnterGame();
+        loadingUI.InitProgress(0, "正在载入...");
     }
 
     private void OnUpdateFileComplete(DownFileInfo file)
@@ -164,12 +185,14 @@ public class HotUpdate : MonoBehaviour
         Debug.Log("OnUpdateFileComplete" + file.url);
         string writeFile = Path.Combine(PathUtil.ReadWritePath, file.fileName);
         FileUtil.WriteFile(writeFile, file.fileData.data);
+        m_DownloadCount++;
+        loadingUI.UpdateProgress(m_DownloadCount);
     }
 
     private void EnterGame()
     {
-        Manager.Resource.ParseVersionFile();
-        Manager.Resource.LoadUI("Login/LoginUI", OnComplete);
+        Manager.Event.Fire((int)GameEvent.GameInit);
+        Destroy(loadingObj);
     }
 
     private void OnComplete(UnityEngine.Object obj)
